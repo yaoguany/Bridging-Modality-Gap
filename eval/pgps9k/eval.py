@@ -11,7 +11,6 @@ from mathruler.grader import extract_boxed_content, grade_answer
 # -------------------------------------------------
 # 1.  Config
 # -------------------------------------------------
-sub_question_list = {"prob_59", "prob_87", "prob_159", "prob_182", "prob_198", "prob_311", "prob_367", "prob_377", "prob_396", "prob_413", "prob_419", "prob_425", "prob_494", "prob_500", "prob_538", "prob_547", "prob_587", "prob_617", "prob_689", "prob_692", "prob_774", "prob_784", "prob_799", "prob_835", "prob_866", "prob_964", "prob_969", "prob_991", "prob_995", "prob_1091", "prob_1234", "prob_1255", "prob_1333", "prob_1401", "prob_1425", "prob_1463", "prob_1469", "prob_1488", "prob_1494", "prob_1498", "prob_1501", "prob_1554", "prob_1594", "prob_1613", "prob_1644", "prob_1729", "prob_1750", "prob_1790", "prob_1794", "prob_1850", "prob_1933", "prob_1973", "prob_1980", "prob_2053", "prob_2070", "prob_2091", "prob_2197", "prob_2202", "prob_2209", "prob_2264", "prob_2405", "prob_2457", "prob_2573", "prob_2636", "prob_2802", "prob_2805", "prob_2845", "prob_2908", "prob_2927", "prob_2934", "prob_2951", "prob_2964", "prob_2976", "prob_2989", "prob_3024", "prob_3028", "prob_3036", "prob_3048", "prob_3187", "prob_3399", "prob_3427", "prob_3470", "prob_3481", "prob_3509", "prob_3569", "prob_3604", "prob_3625", "prob_3689", "prob_3711", "prob_3719", "prob_3791", "prob_3831", "prob_3855", "prob_3924", "prob_3931", "prob_3964", "prob_3967", "prob_3975", "prob_4022", "prob_4040", "prob_4097", "prob_4133", "prob_4293", "prob_4299", "prob_4300", "prob_4333", "prob_4453", "prob_4458", "prob_4508", "prob_4527", "prob_4573", "prob_4651", "prob_4716", "prob_4826", "prob_4859", "prob_4937", "prob_5017", "prob_5084", "prob_5113", "prob_5176", "prob_5177", "prob_5211", "prob_5303", "prob_5314", "prob_5347", "prob_5422", "prob_5427", "prob_5489", "prob_5494", "prob_5548", "prob_5605", "prob_5712", "prob_5890", "prob_5900", "prob_5909", "prob_5932", "prob_5950", "prob_6001", "prob_6055", "prob_6113", "prob_6183", "prob_6194", "prob_6196", "prob_6206", "prob_6300", "prob_6318", "prob_6380", "prob_6388", "prob_6407", "prob_6426", "prob_6430", "prob_6442", "prob_6470", "prob_6472", "prob_6832", "prob_6943", "prob_6999", "prob_7005", "prob_7051", "prob_7065", "prob_7066", "prob_7069", "prob_7085", "prob_7092", "prob_7135", "prob_7146", "prob_7194", "prob_7236", "prob_7305", "prob_7365", "prob_7379", "prob_7396", "prob_7440", "prob_7478", "prob_7500", "prob_7544", "prob_7614", "prob_7622", "prob_7646", "prob_7716", "prob_7719", "prob_7748", "prob_7770", "prob_7778", "prob_7836", "prob_7923", "prob_7934", "prob_7946", "prob_7969", "prob_8022", "prob_8125", "prob_8162", "prob_8163", "prob_8187", "prob_8274", "prob_8313", "prob_8376", "prob_8398", "prob_8438", "prob_8468", "prob_8506", "prob_8567", "prob_8600", "prob_8635", "prob_8665", "prob_8679", "prob_8713", "prob_8749", "prob_8952", "prob_8994"}
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_RESULTS_ROOT = os.path.join(HERE, "results")
@@ -113,8 +112,6 @@ def evaluate_directory(answer_dir, gt_dict, label=None, emit=print):
         emit(f"Directory: {label}")
 
     tot = crr = none = 0
-    sub_tot = sub_crr = sub_none = 0
-    non_tot = non_crr = non_none = 0
     total_len = 0
 
     for fname in sorted(os.listdir(answer_dir)):
@@ -145,22 +142,7 @@ def evaluate_directory(answer_dir, gt_dict, label=None, emit=print):
         if ans == "None":
             none += 1
 
-        if qname in sub_question_list:
-            sub_tot += 1
-            if ok:
-                sub_crr += 1
-            if ans == "None":
-                sub_none += 1
-        else:
-            non_tot += 1
-            if ok:
-                non_crr += 1
-            if ans == "None":
-                non_none += 1
-
     show("Overall", tot, crr, none, total_len, emit=emit)
-    show("In list", sub_tot, sub_crr, sub_none, emit=emit)
-    show("Not in list", non_tot, non_crr, non_none, emit=emit)
 
 
 # -------------------------------------------------
