@@ -14,7 +14,7 @@ from typing import List
 
 HERE = Path(__file__).resolve().parent
 DEFAULT_BASE_RUNNER = HERE / "test-qwen-2d5-vl.py"
-DEFAULT_FULL_RUNNER = HERE / "test-qwen-2d5-vl-fullcond-prompt3.py"
+DEFAULT_FULL_RUNNER = HERE / "test-qwen-2d5-vl-fullcond-prompt.py"
 
 
 def parse_args() -> argparse.Namespace:
