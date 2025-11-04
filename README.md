@@ -160,21 +160,35 @@ Note: `eval.py` uses `mathruler` to extract and compare boxed answers. Install v
 
 ### MathVerse (vLLM)
 
-Option A: run a single model
+- run a single model
 
 ```bash
 cd eval/mathverse
 python inference.py --model qwen2_5_vl_7b --outdir results_mathverse --tries 4 --temperature 0.8 --batch-size 16
 ```
 
-Option B: run multiple models in parallel
+- run multiple models in parallel
 
 ```bash
 # Edit eval/mathverse/model_list.txt first
 python run_mathverse_parallel.py --model-list model_list.txt --base-gpu 0 --num-gpus 8 --outdir results_mathverse
 ```
 
-Summarize results (overall/text/vision splits and per-type):
+Evaluate the results:
+
+- Score every jsonl file under the output directory and write scored files as `*_scored_qwen.jsonl`:
+
+```bash
+python eval-qwen.py --scan-all-results --results-root results_mathverse --scan-output scored_qwen_summary.txt
+```
+
+- Or score specific file(s):
+
+```bash
+python eval-qwen.py results_mathverse/<your_predictions>.jsonl
+```
+
+Summarize evaluation (overall/text/vision splits and per-type):
 
 ```bash
 python eval-results.py --results-root results_mathverse --full
