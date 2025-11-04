@@ -118,7 +118,7 @@ def main(args):
     global_stop_ids: Optional[List[int]] = None
     for qk in tqdm(question_keys):
         qtext = build_question_text(test_items[qk])
-        img_path = os.path.join("Diagram_Visual", test_items[qk]['diagram'])
+        img_path = os.path.join("PGPS9K/Diagram_Visual", test_items[qk]['diagram'])
         data = PIL.Image.open(img_path).convert("RGB")
 
         prompt, stop_ids = render_prompt_and_stops(resolved_model_name, qtext)

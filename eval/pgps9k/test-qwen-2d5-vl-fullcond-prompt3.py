@@ -154,7 +154,7 @@ def parse_args():
                         help='Model alias or HF repo/local path (see resolve_model_name).')
     parser.add_argument('--data-json', type=str, default="PGPS9K/test.json",
                         help='Path to dataset JSON.')
-    parser.add_argument('--image-root', type=str, default="Diagram_Visual",
+    parser.add_argument('--image-root', type=str, default="PGPS9K/Diagram_Visual",
                         help='Folder containing images referenced by dataset.')
     parser.add_argument('--num-prompts', type=int, default=4, help='Candidates per question (n).')
     parser.add_argument('--temperature', type=float, default=0.6)
