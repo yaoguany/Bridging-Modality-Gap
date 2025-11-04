@@ -1,0 +1,5 @@
+qwen3b-with-text-240-without-text-200
+qwen3b-mix-data-480
+qwen3b_with_text_240_kl_280_without_text_160
+qwen7b_with_text_200_kl_100_without_text_200
+qwen7b-with-text-200-without-text-200
