@@ -27,7 +27,7 @@ python3 -m recipe.dapo.main_dapo \
     data.truncation='right' \
     data.image_key=images \
     +data.use_contrastive_kl=True \
-    actor_rollout_ref.model.path=checkpoints/9k_geometry_dapo/qwen7b-full-text/ckpt_200 \
+    actor_rollout_ref.model.path=Qwen/Qwen2.5-VL-7B-Instruct  \
     actor_rollout_ref.actor.optim.lr=1e-6 \
     actor_rollout_ref.model.use_remove_padding=True \
     actor_rollout_ref.actor.ppo_mini_batch_size=128 \

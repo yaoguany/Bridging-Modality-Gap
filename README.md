@@ -113,12 +113,12 @@ bash dapo-mix-data.sh
 bash dapo-curriculum.sh
 ```
 
-### KL training based on full text condition model
+### KL training
 ```bash
 bash dapo_kl.sh
 ```
 
-### Currirulum after KL training
+### Curriculum after KL training
 ```bash
 bash dapo-kl-curriculum.sh
 ```
