@@ -58,7 +58,7 @@ def main() -> None:
 
     engine_args = EngineArgs(
         model=MODEL_MAP[args.model],
-        max_model_len=8192,
+        max_model_len=4096,
         max_num_seqs=args.batch_size,
         mm_processor_kwargs={
             'min_pixels': 256 * 28 * 28,
