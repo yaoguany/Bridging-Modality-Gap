@@ -14,7 +14,6 @@ from mathruler.grader import extract_boxed_content, grade_answer
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_RESULTS_ROOT = os.path.join(HERE, "results")
-DEFAULT_ANSWER_DIR = "/proj/long-multi/kqian/granite-3b-ablate/kqian-tts_gyao/verl_dev/eval/pgps9k/results/new_9k_qwen3b_with_text_240_kl_280_without_text_200_4096_tmp_0.6"
 DEFAULT_GT_FILE = os.path.join(HERE, "PGPS9K", "test.json")
 
 
@@ -25,7 +24,6 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Evaluate PGPS9K results")
     parser.add_argument(
         "--answer-dir",
-        default=DEFAULT_ANSWER_DIR,
         help="Directory containing answer files (defaults to latest run)",
     )
     parser.add_argument(
