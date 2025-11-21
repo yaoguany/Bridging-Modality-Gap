@@ -23,11 +23,11 @@ This repository provides the training and evaluation code for studying and mitig
 ```text
 eval/
   pgps9k/                  # PGPS9K inference + evaluation with vLLM
-    run.sh                 # Parallel runner (launches two prompt modes)
+    run.sh                 # Parallel runner
     run_models_two_modes_parallel_split.py
     test-qwen-2d5-vl.py                    # base prompt
     test-qwen-2d5-vl-fullcond-prompt.py   # full-condition prompt
-    eval.py                 # grade answers vs. ground truth
+    eval.py                 # grade answers.
     model_list.txt          # model aliases or paths to evaluate
     PGPS9K/                 # copy of the dataset for evaluation (see below)
   mathverse/               # MathVerse inference + summarization scripts
@@ -127,17 +127,7 @@ Tips: You may need to convert the FSDP checkpoints to HuggingFace format for cur
 ## Evaluation
 
 ### PGPS9K (vLLM)
-
-1) Edit `eval/pgps9k/model_list.txt` to list models to run. Supported aliases include:
-
-```
-qwen2_5_vl_7b
-qwen2_5_vl_3b
-```
-
-You can also put local checkpoint paths or HF repo IDs.
-
-2) Launch parallel inference (both base and full-condition prompts):
+1) Launch parallel inference (both base and full-condition prompts):
 
 ```bash
 cd eval/pgps9k
@@ -156,7 +146,6 @@ python eval.py --answer-dir results/<your_result_dir> --gt-file PGPS9K/test.json
 python eval.py --scan-all-results --results-root results --scan-output summary.txt
 ```
 
-Note: `eval.py` uses `mathruler` to extract and compare boxed answers. Install via `pip install mathruler` if missing.
 
 ### MathVerse (vLLM)
 

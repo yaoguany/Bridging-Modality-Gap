@@ -39,6 +39,8 @@ def resolve_model_name(input_model_name: str) -> str:
     local_aliases = {
     "qwen2_5_vl_7b": "Qwen/Qwen2.5-VL-7B-Instruct",
     "qwen2_5_vl_3b": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "qwen2_5_vl_7b_kl_curriculum": "yaogy/qwen2_5_vl_7b_kl_curriculum",
+    "qwen2_5_vl_3b_kl_curriculum": "yaogy/qwen2_5_vl_3b_kl_curriculum",
     }
     if m in local_aliases:
         return local_aliases[m]
@@ -47,23 +49,15 @@ def resolve_model_name(input_model_name: str) -> str:
     return m
 
 
-def render_prompt_and_stops(
-    model_name: str,
+def render_prompt(
     question: str,
-) -> Tuple[str, Optional[List[int]], AutoTokenizer]:
-    tok = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+) -> str:
 
     prompt = f"<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\n<|vision_start|><|image_pad|><|vision_end|>{question}<|im_end|>\n<|im_start|>assistant\n"
-    stop_tokens = None
-
     
     prompt = f"<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\n<|vision_start|><|image_pad|><|vision_end|>{question}<|im_end|>\n<|im_start|>assistant\n"
 
-    stop_ids = None
-    if stop_tokens:
-        stop_ids = [tok.convert_tokens_to_ids(t) for t in stop_tokens]
-
-    return prompt, stop_ids, tok
+    return prompt
 
 
 # ============ Helpers for your dataset-specific pre-processing ============
@@ -124,7 +118,7 @@ def build_question_text(item: Dict) -> str:
         + condition_str
         + ".\nBased on these conditions, answer the question: "
         + item["text"]
-        + "You should FIRST think about the reasoning process as an internal monologue and then provide the final answer. "
+        + "You FIRST think about the reasoning process as an internal monologue and then provide the final answer. "
         + "The reasoning process MUST BE enclosed within <think> </think> tags. "
         + "The final answer MUST BE put in \\boxed{}"
     )
@@ -184,10 +178,8 @@ def main():
         },
         trust_remote_code=True,
         seed=args.seed,
-        # If your model is long-context, you can set max_model_len here.
+        max_model_len=args.max_tokens,
     )
-    # IMPORTANT: allow ONE image per prompt
-    engine_args.limit_mm_per_prompt = {"image": 1}
 
     llm = LLM(**asdict(engine_args))
 
@@ -198,22 +190,12 @@ def main():
 
     # Build inputs
     inputs: List[dict] = []
-    global_stop_ids: Optional[List[int]] = None
 
     for qk in tqdm(question_keys):
         item = test_items[qk]
         question_text = build_question_text(item)
         # Render prompt & stop ids with the model's chat template
-        prompt, stop_ids, _tok = render_prompt_and_stops(model_name, question_text)
-
-        if stop_ids:
-            if global_stop_ids is None:
-                global_stop_ids = stop_ids
-            elif stop_ids != global_stop_ids:
-                # Keep the first set and warn if subsequent ones differ.
-                print(
-                    "[warn] Detected mismatched stop token ids; using the first set only."
-                )
+        prompt = render_prompt(question_text)
 
         # Load image
         img_path = os.path.join(args.image_root, item['diagram'])

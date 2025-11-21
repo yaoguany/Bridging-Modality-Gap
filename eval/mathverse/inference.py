@@ -2,9 +2,8 @@
 from __future__ import annotations
 import argparse, json
 import random
-import numpy as np
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 from datasets import load_dataset
 from vllm import LLM, SamplingParams, EngineArgs
@@ -13,14 +12,16 @@ from tqdm import tqdm
 MODEL_MAP = {
     "qwen2_5_vl_7b": "Qwen/Qwen2.5-VL-7B-Instruct",
     "qwen2_5_vl_3b": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "qwen2_5_vl_7b_kl_curriculum": "yaogy/qwen2_5_vl_7b_kl_curriculum",
+    "qwen2_5_vl_3b_kl_curriculum": "yaogy/qwen2_5_vl_3b_kl_curriculum",
 }
 
 PLACEHOLDER = "<|image_pad|>"
 def build_prompt(q: str) -> str:
     return ("<|im_start|>user\n"
             f"<|vision_start|>{PLACEHOLDER}<|vision_end|>{q}\n"
-            "You should FIRST think step-by-step inside <think></think>, "
-            "then wrap the final answer in \\boxed{ }."
+            "You FIRST think step-by-step inside <think></think>, "
+            "then wrap the final answer in \\boxed{{}}."
             "<|im_end|>\n<|im_start|>assistant\n<think>")
 
 def load_mathverse():
@@ -71,8 +72,6 @@ def main() -> None:
     init_args = engine_args.__dict__.copy()
 
     llm = LLM(**init_args)
-    # Change here: set n=4 to generate 4 samples per prompt
-    # Use a fixed seed for vLLM sampling to ensure deterministic outputs across runs
 
     sampling = SamplingParams(
         temperature=args.temperature,
